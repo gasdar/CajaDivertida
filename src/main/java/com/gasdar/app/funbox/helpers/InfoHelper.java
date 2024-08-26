@@ -1,4 +1,4 @@
-package com.gasdar.app.caja_divertida.helpers;
+package com.gasdar.app.funbox.helpers;
 
 import java.util.Date;
 import java.util.HashMap;

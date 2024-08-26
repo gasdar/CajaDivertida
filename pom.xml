@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gasdar.app</groupId>
-	<artifactId>caja-divertida</artifactId>
+	<artifactId>funbox</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>caja-divertida</name>
+	<name>funbox</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

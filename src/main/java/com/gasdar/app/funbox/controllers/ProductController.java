@@ -1,4 +1,4 @@
-package com.gasdar.app.caja_divertida.controllers;
+package com.gasdar.app.funbox.controllers;
 
 import java.util.Map;
 import java.util.Optional;
@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gasdar.app.caja_divertida.helpers.InfoHelper;
-import com.gasdar.app.caja_divertida.models.Producto;
-import com.gasdar.app.caja_divertida.services.ProductoService;
+import com.gasdar.app.funbox.helpers.InfoHelper;
+import com.gasdar.app.funbox.models.Product;
+import com.gasdar.app.funbox.services.ProductService;
 
 @RestController
 @RequestMapping("/app/products")
-public class ProductoController {
+public class ProductController {
 
     @Autowired
-    private ProductoService service;
+    private ProductService service;
 
     @GetMapping
     public ResponseEntity<?> listAll() {
@@ -34,7 +34,7 @@ public class ProductoController {
 
     @GetMapping(value="/{id}")
     public ResponseEntity<?> findById(@PathVariable ObjectId id) {
-        Optional<Producto> optionalProd = service.findById(id);
+        Optional<Product> optionalProd = service.findById(id);
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("product", optionalProd.get(), "id", optionalProd.get().getId().toString()));
         }
@@ -42,14 +42,14 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Producto producto) {
-        producto.setStock(100);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(producto));
+    public ResponseEntity<?> save(@RequestBody Product product) {
+        product.setStock(1000);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(product));
     }
 
     @PutMapping(value="/{id}")
-    public ResponseEntity<?> update(@PathVariable ObjectId id, @RequestBody Producto producto) {
-        Optional<Producto> optionalProd = service.update(id, producto);
+    public ResponseEntity<?> update(@PathVariable ObjectId id, @RequestBody Product product) {
+        Optional<Product> optionalProd = service.update(id, product);
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalProd.get());
         }
@@ -58,7 +58,7 @@ public class ProductoController {
 
     @DeleteMapping(value="/{id}")
     public ResponseEntity<?> delete(@PathVariable ObjectId id) {
-        Optional<Producto> optionalProd = service.deleteById(id);
+        Optional<Product> optionalProd = service.deleteById(id);
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalProd.get());
         }
