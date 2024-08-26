@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,9 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
+    @Value("${response.notfound}")
+    private String messageNF;
+
     @GetMapping
     public ResponseEntity<?> listAll() {
         return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
@@ -38,7 +42,7 @@ public class ProductController {
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("product", optionalProd.get(), "id", optionalProd.get().getId().toString()));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse("El registro no fue encontrado", HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
     @PostMapping
@@ -53,7 +57,7 @@ public class ProductController {
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalProd.get());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse("El registro no se pudo actualizar", HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
     @DeleteMapping(value="/{id}")
@@ -62,7 +66,7 @@ public class ProductController {
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalProd.get());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse("El registro no se pudo eliminar", HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
 }

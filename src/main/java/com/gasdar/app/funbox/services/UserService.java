@@ -12,5 +12,7 @@ public interface UserService {
     List<User> findAll();
     Optional<User> findById(ObjectId id);
     User save(User user);
+    Optional<User> update(ObjectId id, User user);
+    Optional<User> delete(ObjectId id);
 
 }
