@@ -3,13 +3,12 @@ package com.gasdar.app.caja_divertida.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.mongodb.lang.NonNull;
+// import com.mongodb.lang.NonNull;
 
-@Document(value="productos")
+@Document(collection="productos")
 public class Producto {
 
     @Id
-    @NonNull
     private Integer id;
     
     private String nombre;
