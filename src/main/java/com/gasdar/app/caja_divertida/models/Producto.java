@@ -1,15 +1,14 @@
 package com.gasdar.app.caja_divertida.models;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-// import com.mongodb.lang.NonNull;
 
 @Document(collection="productos")
 public class Producto {
 
     @Id
-    private Integer id;
+    private ObjectId id;
     
     private String nombre;
     private String descripcion;
@@ -26,10 +25,10 @@ public class Producto {
         this.stock = stock;
         this.precio = precio;
     }
-    public Integer getId() {
+    public ObjectId getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
     public String getNombre() {
