@@ -1,8 +1,12 @@
 package com.gasdar.app.funbox.models;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.gasdar.app.funbox.models.dtos.FunBoxDto;
 
 @Document(collection="users")
 public class User {
@@ -16,6 +20,7 @@ public class User {
     private String email;
     private String phone;
     private Integer salary;
+    private List<FunBoxDto> boxesDto;
 
     public User() {
     }
@@ -69,6 +74,11 @@ public class User {
     public void setSalary(Integer salary) {
         this.salary = salary;
     }
-    
+    public List<FunBoxDto> getBoxesDto() {
+        return boxesDto;
+    }
+    public void setBoxesDto(List<FunBoxDto> boxesDto) {
+        this.boxesDto = boxesDto;
+    }
 
 }

@@ -21,7 +21,7 @@ import com.gasdar.app.funbox.models.Product;
 import com.gasdar.app.funbox.services.ProductService;
 
 @RestController
-@RequestMapping("/app/products")
+@RequestMapping(value="/app/products")
 public class ProductController {
 
     @Autowired
