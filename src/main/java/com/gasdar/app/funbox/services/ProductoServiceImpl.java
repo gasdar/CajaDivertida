@@ -53,7 +53,7 @@ public class ProductoServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Optional<Product> deleteById(ObjectId id) {
+    public Optional<Product> delete(ObjectId id) {
         Optional<Product> optionalProd = repository.findById(id);
         if(optionalProd.isPresent()) {
             Product prod = optionalProd.get();

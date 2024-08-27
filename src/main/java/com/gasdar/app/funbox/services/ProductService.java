@@ -13,6 +13,6 @@ public interface ProductService {
     Optional<Product> findById(ObjectId id);
     Product save(Product product);
     Optional<Product> update(ObjectId id, Product product);
-    Optional<Product> deleteById(ObjectId id);
+    Optional<Product> delete(ObjectId id);
 
 }
