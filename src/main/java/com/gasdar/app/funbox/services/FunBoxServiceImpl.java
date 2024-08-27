@@ -37,7 +37,7 @@ public class FunBoxServiceImpl implements FunBoxService {
 
     @Transactional
     @Override
-    public Optional<FunBox> update(ObjectId id, FunBox funBox) {
+    public Optional<FunBox> update(FunBox funBox, ObjectId id) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }

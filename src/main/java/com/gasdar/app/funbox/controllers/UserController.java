@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gasdar.app.funbox.helpers.InfoHelper;
+import com.gasdar.app.funbox.helpers.RequestHelper;
 import com.gasdar.app.funbox.models.User;
 import com.gasdar.app.funbox.services.UserService;
 
@@ -27,7 +27,7 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @Value("${response.notfound}")
+    @Value("${response.not-found}")
     private String messageNF;
     
     @GetMapping
@@ -44,7 +44,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.OK).body(optionalUser.get());
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RequestHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
     @PostMapping
@@ -62,7 +62,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.OK).body(optionalUser.get());
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RequestHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
     @DeleteMapping(value="/{id}")
@@ -74,7 +74,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.OK).body(optionalUser.get());
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RequestHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
 }

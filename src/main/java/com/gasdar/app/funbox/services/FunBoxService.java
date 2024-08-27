@@ -12,7 +12,7 @@ public interface FunBoxService {
     List<FunBox> findAll();
     Optional<FunBox> findById(ObjectId id);
     FunBox save(FunBox funBox);
-    Optional<FunBox> update(ObjectId id, FunBox funBox);
+    Optional<FunBox> update(FunBox funBox, ObjectId id);
     Optional<FunBox> delete(ObjectId id);
 
 }

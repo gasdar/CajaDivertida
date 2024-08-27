@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gasdar.app.funbox.helpers.InfoHelper;
+import com.gasdar.app.funbox.helpers.RequestHelper;
 import com.gasdar.app.funbox.models.Product;
 import com.gasdar.app.funbox.services.ProductService;
 
@@ -28,7 +28,7 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    @Value("${response.notfound}")
+    @Value("${response.not-found}")
     private String messageNF;
 
     @GetMapping
@@ -42,7 +42,7 @@ public class ProductController {
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("product", optionalProd.get(), "id", optionalProd.get().getId().toString()));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RequestHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
     @PostMapping
@@ -57,7 +57,7 @@ public class ProductController {
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalProd.get());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RequestHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
     @DeleteMapping(value="/{id}")
@@ -66,7 +66,7 @@ public class ProductController {
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalProd.get());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(InfoHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RequestHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
     }
 
 }
