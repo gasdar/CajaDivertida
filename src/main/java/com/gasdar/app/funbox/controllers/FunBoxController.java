@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gasdar.app.funbox.helpers.RequestHelper;
 import com.gasdar.app.funbox.models.FunBox;
 import com.gasdar.app.funbox.services.FunBoxService;
-import com.gasdar.app.funbox.validators.FunBoxValidator;
 
 import jakarta.validation.Valid;
 
@@ -33,9 +32,6 @@ public class FunBoxController {
     @Autowired
     private FunBoxService service;
 
-    @Autowired
-    private FunBoxValidator validator;
-
     @Value("${response.not-found}")
     private String messageNF;
 
@@ -50,7 +46,7 @@ public class FunBoxController {
     @GetMapping(value="/{id}")
     public ResponseEntity<?> findById(@PathVariable String id) {
         ResponseEntity<?> notFound = ResponseEntity.status(HttpStatus.NOT_FOUND).body(RequestHelper.infoResponse(messageNF, HttpStatus.NOT_FOUND.value()));
-        if(id.length() == 24) {
+        if(id.length() == 24) { // método helper
             ObjectId boxId = new ObjectId(id);
             Optional<FunBox> optionalBox = service.findById(boxId);
             if(optionalBox.isPresent()) {
@@ -63,19 +59,20 @@ public class FunBoxController {
     // Se validan datos básicos, para luego obtener cálculo del valor por pagar y luego dirigirse a pagar
     @PostMapping(value="/{userId}")
     public ResponseEntity<?> save(@Valid @RequestBody FunBox box, BindingResult bindingResult, @PathVariable ObjectId userId) {
-        validator.validate(box, bindingResult, userId);
+        service.validateData(box, bindingResult, userId);
         if(bindingResult.hasErrors()) {
             return RequestHelper.getErrorsFromBody(bindingResult);
         }
         // Los campos están validados, se obtiene el precio de la caja y se corraborá que existan los productos suficientes para generar una caja
         // Si no se asignan los valores restantes de la caja, es porque no hay sufientes productos de esa categoría para generar la caja
-        if(!validator.assignBoxValues(box)) {
+        if(!service.assignOthersValues(box)) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RequestHelper.infoResponse(messageNotProducts, HttpStatus.NOT_ACCEPTABLE.value()));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(box));
     }
 
-    // Los campos están validados, se realizá el pago y se dispará la solicitud (=> estado="Finalizado"), se genere el código y los productos de la caja
+    // Los campos están validados, se corraborarón que existan los productos sufientes para generar la caja y
+    // se realizá el pago, entonces se llama la solicitud (=> estado="Finalizado"), se genere el código y los productos de la caja
     @PutMapping(value="/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody FunBox box, @PathVariable String id) {
         return null;
