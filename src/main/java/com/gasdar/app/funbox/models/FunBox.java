@@ -1,6 +1,8 @@
 package com.gasdar.app.funbox.models;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -24,6 +26,7 @@ public class FunBox {
     private String state;
     private UserDto userDto;
     private List<ProductDto> prodsDto;
+    private Map<String, Object> data;
     
     public FunBox() {
     }
@@ -98,6 +101,21 @@ public class FunBox {
     }
     public void setProdsDto(List<ProductDto> prodsDto) {
         this.prodsDto = prodsDto;
+    }
+    public Map<String, Object> getData() {
+        return data;
+    }
+    public void setData(Map<String, Object> data) {
+        this.data = data;
+    }
+    public void adjustData(String key, Object value) {
+        Map<String, Object> json = new HashMap<>();
+        if(this.data == null) {
+            json.put(key, value);
+            this.data = json;
+        } else {
+            this.data.put(key, value);
+        }
     }
     
 }

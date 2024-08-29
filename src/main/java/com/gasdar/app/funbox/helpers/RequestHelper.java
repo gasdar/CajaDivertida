@@ -18,6 +18,15 @@ public class RequestHelper {
         return json;
     }
 
+    public static Map<String, Object> infoResponse(String message, Integer code, Map<String, Object> data) {
+        Map<String, Object> json = new HashMap<>();
+        json.put("responseMessage", message);
+        json.put("responseCode", code);
+        json.put("date", new Date().toString());
+        json.put("info", data);
+        return json;
+    }
+
     public static ResponseEntity<?> getErrorsFromBody(BindingResult bindingResult) {
         Map<String, String> json = new HashMap<>();
         bindingResult.getFieldErrors().forEach(error -> {

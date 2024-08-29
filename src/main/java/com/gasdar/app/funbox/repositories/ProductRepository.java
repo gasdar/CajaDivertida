@@ -12,11 +12,17 @@ import com.gasdar.app.funbox.models.Product;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, ObjectId> {
 
-    // Consulta personalizada con proyección y operadores
-    @Query(value="{ 'price': { $gte: ?0, $lte: ?1 } }")
+    // Ejemplos
+    @Query(value="{ 'price': { $gte : ?0, $lt : ?1 }, 'stock': { $gte : 5 } }", count=true)
     long countBetweenMinAndMax(int min, int max);
-
     // Consulta automática generada por Spring Data MongoDB
     List<Product> findByPriceBetween(int min, int max);
+
+    // Consultas Propias
+    @Query(value="{ 'price': { $gte: ?0, $lte: ?1 }, 'stock': { $gte: 5 } }", count=true)
+    long countProdsBetweenMinAndAvg(int min, int avg);
+
+    @Query(value="{ 'price': { $gt: ?0, $lte: ?1 }, 'stock': { $gte: 5 } }", count=true)
+    long countProdsUpperAvgAndBetweenMax(int avg, int max);
 
 }

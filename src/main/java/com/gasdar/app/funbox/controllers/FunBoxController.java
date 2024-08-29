@@ -18,8 +18,6 @@ import com.gasdar.app.funbox.helpers.RequestHelper;
 import com.gasdar.app.funbox.models.FunBox;
 import com.gasdar.app.funbox.services.FunBoxService;
 
-import jakarta.validation.Valid;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,7 +56,7 @@ public class FunBoxController {
 
     // Se validan datos básicos, para luego obtener cálculo del valor por pagar y luego dirigirse a pagar
     @PostMapping(value="/{userId}")
-    public ResponseEntity<?> save(@Valid @RequestBody FunBox box, BindingResult bindingResult, @PathVariable ObjectId userId) {
+    public ResponseEntity<?> save(@RequestBody FunBox box, BindingResult bindingResult, @PathVariable ObjectId userId) {
         service.validateData(box, bindingResult, userId);
         if(bindingResult.hasErrors()) {
             return RequestHelper.getErrorsFromBody(bindingResult);
@@ -66,15 +64,17 @@ public class FunBoxController {
         // Los campos están validados, se obtiene el precio de la caja y se corraborá que existan los productos suficientes para generar una caja
         // Si no se asignan los valores restantes de la caja, es porque no hay sufientes productos de esa categoría para generar la caja
         if(!service.assignOthersValues(box)) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RequestHelper.infoResponse(messageNotProducts, HttpStatus.NOT_ACCEPTABLE.value()));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RequestHelper.infoResponse(messageNotProducts, HttpStatus.NOT_ACCEPTABLE.value(), box.getData()));
         }
+        // Si todo esta bien se elimina la info de desarrollo
+        box.setData(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(box));
     }
 
     // Los campos están validados, se corraborarón que existan los productos sufientes para generar la caja y
     // se realizá el pago, entonces se llama la solicitud (=> estado="Finalizado"), se genere el código y los productos de la caja
     @PutMapping(value="/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody FunBox box, @PathVariable String id) {
+    public ResponseEntity<?> update(@RequestBody FunBox box, @PathVariable ObjectId id) {
         return null;
     }
 

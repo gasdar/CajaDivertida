@@ -1,5 +1,6 @@
 package com.gasdar.app.funbox.controllers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,14 +48,33 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Product product) {
-        product.setStock(1000);
+    public ResponseEntity<?> save(@RequestBody Product product, BindingResult bindingResult) {
+        service.validateInfo(product, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return RequestHelper.getErrorsFromBody(bindingResult);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(product));
     }
 
+    @PostMapping(value="/list")
+    public ResponseEntity<?> saveAll(Product prod, BindingResult bindingResult, @RequestBody List<Product> prods) {
+        if(prods.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(RequestHelper.infoResponse(messageNF, HttpStatus.BAD_REQUEST.value()));
+        }
+        service.validateInfoList(bindingResult, prods);
+        if(bindingResult.hasErrors()) {
+            return RequestHelper.getErrorsFromBody(bindingResult);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveAll(prods));
+    }
+
     @PutMapping(value="/{id}")
-    public ResponseEntity<?> update(@PathVariable ObjectId id, @RequestBody Product product) {
-        Optional<Product> optionalProd = service.update(id, product);
+    public ResponseEntity<?> update(@RequestBody Product product, BindingResult bindingResult, @PathVariable ObjectId id) {
+        service.validateInfo(product, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return RequestHelper.getErrorsFromBody(bindingResult);
+        }
+        Optional<Product> optionalProd = service.update(product, id);
         if(optionalProd.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalProd.get());
         }
